@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { CreateProjectUseCase } from "../../../application/project/create-project.usecase";
-import { randomUUID } from "node:crypto";
+import { CreateProjectUseCase } from "../../../../application/project/create-project.usecase";
 
 declare global {
   namespace Express {
