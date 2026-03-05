@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
-import { CreateProjectController } from "./interfaces/http/controllers/projects/create-project.controller";
-import { CreateProjectUseCase } from "./application/project/create-project.usecase";
-import { PostgresProjectRepository } from "./infra/db/project.repository.impl";
-import { GetAllProjectsUseCase } from "./application/project/get-all-projects.usecase";
-import { GetAllProjectsController } from "./interfaces/http/controllers/projects/get-all-projects.controller";
+import { CreateProjectController } from "../controllers/projects/create-project.controller";
+import { CreateProjectUseCase } from "../../../application/project/create-project.usecase";
+import { PostgresProjectRepository } from "../../../infra/db/project.repository.impl";
+import { GetAllProjectsUseCase } from "../../../application/project/get-all-projects.usecase";
+import { GetAllProjectsController } from "../controllers/projects/get-all-projects.controller";
 
 const projectRouter = Router();
 
