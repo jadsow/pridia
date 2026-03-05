@@ -1,13 +1,13 @@
 import "dotenv/config";
 import express from "express";
-import projectRouter from "./routes";
+import router from "./interfaces/http/routes/index";
 import { pool } from "./infra/db/pg-client";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use("/projects", projectRouter);
+app.use("/", router);
 
 async function startServer() {
   try {

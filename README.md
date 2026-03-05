@@ -1,19 +1,24 @@
 # Pridia
 
-Pridia is a tool that helps product teams transform ideas into structured **Product Requirement Documents (PRDs)**.
+Pridia is an AI-assisted tool that helps product teams transform ideas into structured **Product Requirement Documents (PRDs)**.
 
-The system guides users through a discovery workflow and generates structured documentation that can be used as a starting point for product development.
+The system guides users through a discovery workflow and generates structured documentation that can be used as the foundation for product development.
 
-## Features
+Unlike traditional tools, Pridia runs **entirely with local AI models using Ollama**, meaning no external AI APIs are required.
+
+---
+
+# Features
 
 Pridia assists product teams by generating:
 
 - Product overview
+- Problem statements
+- Target users
 - Core features
-- User stories
-- Initial domain suggestions
+- Success metrics
 
-The goal is not to replace product teams, but to **act as an intelligent assistant** that helps structure early product ideas.
+The goal is not to replace product teams, but to **act as an intelligent assistant that helps structure early product ideas**.
 
 ---
 
@@ -24,36 +29,49 @@ The typical workflow inside Pridia is:
 1. Create a project
 2. Describe the product idea
 3. Answer discovery questions
-4. Generate a structured PRD
-5. Generate user stories
+4. Generate a structured PRD using AI
 
 Simplified flow:
 
+```
 Idea
 ↓
 Discovery Questions
 ↓
 PRD Generation
-↓
-User Stories
+```
+
+The generated PRD can then be used as a starting point for:
+
+- product planning
+- feature breakdown
+- user story generation
 
 ---
 
 # Architecture
 
-Pridia follows a layered backend architecture.
+Pridia follows a layered architecture inspired by **Clean Architecture principles**.
 
+```
 Client
 ↓
-Backend API (Node + Express)
+HTTP Controllers
 ↓
 Use Cases
 ↓
+Domain
+↓
 Repositories
 ↓
-PostgreSQL
+Infrastructure
+```
 
-The AI layer is powered by **local LLMs using Ollama**, allowing the system to run without external API dependencies.
+This separation ensures that:
+
+- business logic is independent from frameworks
+- infrastructure can be replaced easily
+- the system remains maintainable as it grows
 
 ---
 
@@ -63,13 +81,14 @@ The AI layer is powered by **local LLMs using Ollama**, allowing the system to r
 
 - Vue 3
 - TypeScript
+- (planned) Vuetify
 
 ## Backend
 
 - Node.js
 - Express
 - PostgreSQL
-- pg (database driver)
+- pg
 
 ## Infrastructure
 
@@ -78,7 +97,8 @@ The AI layer is powered by **local LLMs using Ollama**, allowing the system to r
 
 ## AI
 
-- Ollama (local LLM models)
+- Ollama
+- Local LLM models (Llama3)
 
 ---
 
@@ -91,7 +111,7 @@ pridia
 │   ├── src
 │   │   ├── domain
 │   │   ├── application
-│   │   ├── infrastructure
+│   │   ├── infra
 │   │   └── interfaces
 │
 ├── frontend
@@ -101,29 +121,31 @@ pridia
 └── docker-compose.yml
 ```
 
-The backend follows a layered architecture separating:
+Backend layers:
 
-- **Domain** → business entities and contracts
-- **Application** → use cases
-- **Infrastructure** → database and external integrations
-- **Interfaces** → HTTP controllers and routes
+| Layer          | Responsibility                   |
+| -------------- | -------------------------------- |
+| Domain         | Business entities and interfaces |
+| Application    | Use cases                        |
+| Infrastructure | Database and external services   |
+| Interfaces     | HTTP controllers and routes      |
 
 ---
 
 # Running the project locally
 
+Pridia is designed so anyone can run the entire environment with **Docker**.
+
 ## 1. Clone the repository
 
 ```
-git clone https://github.com/your-user/pridia
+git clone https://github.com/jadsow/pridia.git
 cd pridia
 ```
 
 ---
 
-## 2. Start infrastructure
-
-Run Docker Compose to start PostgreSQL and Ollama.
+## 2. Start the infrastructure
 
 ```
 docker compose up
@@ -131,8 +153,11 @@ docker compose up
 
 This will start:
 
-- PostgreSQL database
-- Ollama for local AI models
+- PostgreSQL
+- Ollama
+- Local LLM model (downloaded automatically)
+
+⚠️ The **first run may take a few minutes** because the AI model will be downloaded.
 
 ---
 
@@ -152,11 +177,13 @@ http://localhost:3000
 
 ---
 
-# Example API Request
+# Example API Usage
 
-Create a project:
+### Create a project
 
+```
 POST /projects
+```
 
 Request body:
 
@@ -169,24 +196,77 @@ Request body:
 
 ---
 
+### Add discovery answers
+
+```
+POST /projects/:id/discovery
+```
+
+---
+
+### Generate PRD
+
+```
+POST /projects/:id/generate-prd
+```
+
+The system will:
+
+1. Collect discovery answers
+2. Generate a structured prompt
+3. Send the prompt to the local LLM
+4. Store the generated PRD in PostgreSQL
+
+---
+
+# Example Generated PRD
+
+The AI generates structured documentation such as:
+
+```
+# Product Requirement Document
+
+## Overview
+...
+
+## Problem Statement
+...
+
+## Target Users
+...
+
+## Core Features
+...
+
+## Success Metrics
+...
+```
+
+---
+
 # Roadmap
 
-Planned features for the project:
+Planned improvements:
 
 - [x] Project creation
-- [ ] Discovery questions
-- [ ] PRD generation
-- [ ] User stories generation
+- [x] Discovery answers
+- [x] AI PRD generation
+- [ ] PRD editor
+- [ ] User story generation
 - [ ] Frontend interface
+- [ ] Authentication
 - [ ] Collaboration features
 
 ---
 
 # About
 
-Pridia is being developed as a portfolio project focused on:
+Pridia is a portfolio project focused on:
 
 - AI-assisted product documentation
-- Backend architecture
-- Local AI model integration
-- Docker-based development environments
+- backend architecture
+- clean architecture principles
+- local AI model integration
+- dockerized development environments
+
+The goal of the project is to explore how **AI can assist product teams during the early stages of product discovery and documentation**.
