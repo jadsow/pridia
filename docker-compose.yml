@@ -1,0 +1,27 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: pridia_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: pridia
+      POSTGRES_PASSWORD: pridia
+      POSTGRES_DB: pridia
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/infra/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  ollama:
+    image: ollama/ollama
+    container_name: pridia_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  postgres_data:
+  ollama_data:
