@@ -1,5 +1,41 @@
 services:
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pridia_backend
+    working_dir: /app
+    environment:
+      DATABASE_URL: postgresql://pridia:pridia@postgres:5432/pridia
+      PORT: 3000
+      OLLAMA_URL: http://ollama:11434
+      FRONTEND_ORIGIN: http://localhost:5173
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - ollama
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pridia_frontend
+    working_dir: /app
+    environment:
+      VITE_API_BASE_URL: http://localhost:3001
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
   postgres:
     image: postgres:16
     container_name: pridia_postgres

@@ -25,6 +25,8 @@ export class GeneratePRDUseCase {
       .map((a) => `Question: ${a.question}\nAnswer: ${a.answer}`)
       .join("\n\n");
 
+    console.log("Discovery answersssss:", discoveryText);
+
     const prompt = this.prdPromptBuilder.build(discoveryText);
 
     const content = await this.aiService.generatePRD(prompt);

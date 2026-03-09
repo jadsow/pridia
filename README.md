@@ -145,7 +145,7 @@ cd pridia
 
 ---
 
-## 2. Start the infrastructure
+## 2. Start the full stack
 
 ```
 docker compose up
@@ -153,26 +153,30 @@ docker compose up
 
 This will start:
 
+- Frontend (Vite)
+- Backend (Express)
 - PostgreSQL
 - Ollama
 - Local LLM model (downloaded automatically)
 
 ⚠️ The **first run may take a few minutes** because the AI model will be downloaded.
 
----
-
-## 3. Run the backend
+Frontend URL:
 
 ```
-cd backend
-npm install
-npm run dev
+http://localhost:5173
 ```
 
-The API will be available at:
+Backend API URL:
 
 ```
-http://localhost:3000
+http://localhost:3001
+```
+
+Ollama URL:
+
+```
+http://localhost:11434
 ```
 
 ---

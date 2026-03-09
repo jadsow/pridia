@@ -2,7 +2,9 @@ import { AIService } from "../../domain/ai/ai.service";
 
 export class OllamaService implements AIService {
   async generatePRD(prompt: string): Promise<string> {
-    const response = await fetch("http://localhost:11434/api/generate", {
+    const ollamaUrl = process.env.OLLAMA_URL || "http://localhost:11434";
+
+    const response = await fetch(`${ollamaUrl}/api/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -14,7 +16,7 @@ export class OllamaService implements AIService {
       }),
     });
 
-    const data = await response.json() as { response: string };
+    const data = (await response.json()) as { response: string };
 
     return data.response;
   }
