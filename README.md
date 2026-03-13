@@ -136,6 +136,20 @@ Backend layers:
 
 Pridia is designed so anyone can run the entire environment with **Docker**.
 
+## Prerequisites
+
+Before running the project, make sure you have installed:
+
+- Docker Desktop (or Docker Engine)
+- Docker Compose (Docker Desktop already includes it)
+
+You can verify installation with:
+
+```
+docker --version
+docker compose version
+```
+
 ## 1. Clone the repository
 
 ```
