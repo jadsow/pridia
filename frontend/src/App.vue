@@ -37,7 +37,7 @@ const savingDiscovery = ref(false);
 
 const newProjectName = ref("");
 const newProjectIdea = ref("");
-const discoveryQuestion = ref("Qual problema principal este produto resolve?");
+const discoveryQuestion = ref("What primary problem does this product solve?");
 const discoveryAnswer = ref("");
 
 const selectedProject = computed(() =>
@@ -70,7 +70,7 @@ async function loadProjects() {
 
 async function handleCreateProject() {
   if (!newProjectName.value.trim() || !newProjectIdea.value.trim()) {
-    errorMessage.value = "Informe nome e ideia para criar o projeto.";
+    errorMessage.value = "Enter a name and idea to create the project.";
     return;
   }
 
@@ -86,7 +86,7 @@ async function handleCreateProject() {
 
     newProjectName.value = "";
     newProjectIdea.value = "";
-    successMessage.value = "Projeto criado com sucesso.";
+    successMessage.value = "Project created successfully.";
 
     await loadProjects();
     selectedProjectId.value = created.id;
@@ -133,7 +133,7 @@ async function loadPRD(projectId: string, prdId: string) {
 
 async function handleGeneratePRD() {
   if (!selectedProjectId.value) {
-    errorMessage.value = "Selecione um projeto antes de gerar o PRD.";
+    errorMessage.value = "Select a project before generating a PRD.";
     return;
   }
 
@@ -153,7 +153,7 @@ async function handleGeneratePRD() {
     }
 
     const generated = await generatePRD(selectedProjectId.value);
-    successMessage.value = "PRD gerado com sucesso.";
+    successMessage.value = "PRD generated successfully.";
 
     await loadProjectPRDs(selectedProjectId.value);
     selectedPRDId.value = generated.id;
@@ -162,7 +162,7 @@ async function handleGeneratePRD() {
     const message = (error as Error).message;
     if (message.includes("No discovery answers found")) {
       errorMessage.value =
-        "Nenhuma resposta de discovery encontrada. Preencha a resposta e salve, ou clique em gerar com a resposta preenchida.";
+        "No discovery answers found. Fill in an answer and save it, or click generate with the answer filled in.";
     } else {
       errorMessage.value = message;
     }
@@ -173,13 +173,13 @@ async function handleGeneratePRD() {
 
 async function handleSaveDiscoveryAnswer() {
   if (!selectedProjectId.value) {
-    errorMessage.value = "Selecione um projeto antes de enviar discovery.";
+    errorMessage.value = "Select a project before submitting discovery.";
     return;
   }
 
   if (!discoveryQuestion.value.trim() || !discoveryAnswer.value.trim()) {
     errorMessage.value =
-      "Preencha a pergunta e a resposta de discovery para continuar.";
+      "Fill in both the discovery question and answer to continue.";
     return;
   }
 
@@ -194,7 +194,7 @@ async function handleSaveDiscoveryAnswer() {
       discoveryAnswer.value.trim(),
     );
 
-    successMessage.value = "Resposta de discovery salva com sucesso.";
+    successMessage.value = "Discovery answer saved successfully.";
     discoveryAnswer.value = "";
   } catch (error) {
     errorMessage.value = (error as Error).message;
@@ -205,7 +205,7 @@ async function handleSaveDiscoveryAnswer() {
 
 async function handleSavePRD() {
   if (!selectedProjectId.value || !selectedPRDId.value) {
-    errorMessage.value = "Selecione um PRD para salvar.";
+    errorMessage.value = "Select a PRD to save.";
     return;
   }
 
@@ -221,7 +221,7 @@ async function handleSavePRD() {
     );
 
     selectedPRD.value = updated;
-    successMessage.value = "PRD salvo com sucesso.";
+    successMessage.value = "PRD saved successfully.";
     await loadProjectPRDs(selectedProjectId.value);
   } catch (error) {
     errorMessage.value = (error as Error).message;
@@ -232,7 +232,7 @@ async function handleSavePRD() {
 
 function handleExportPDF() {
   if (!editorContent.value.trim()) {
-    errorMessage.value = "Nao ha conteudo para exportar.";
+    errorMessage.value = "There is no content to export.";
     return;
   }
 
@@ -301,8 +301,8 @@ onMounted(async () => {
         <p class="eyebrow">AI Product Co-Pilot</p>
         <h1>Pridia PRD Studio</h1>
         <p>
-          Gere, edite, visualize e exporte PRDs com uma experiencia visual mais
-          completa.
+          Generate, edit, preview, and export PRDs with a richer visual
+          experience.
         </p>
       </div>
       <button
@@ -310,36 +310,36 @@ onMounted(async () => {
         :disabled="generatingPRD || !selectedProjectId"
         @click="handleGeneratePRD"
       >
-        {{ generatingPRD ? "Gerando PRD..." : "Gerar Novo PRD" }}
+        {{ generatingPRD ? "Generating PRD..." : "Generate New PRD" }}
       </button>
     </header>
 
     <main class="layout">
       <section class="panel create-panel">
-        <h2>Novo Projeto</h2>
+        <h2>New Project</h2>
         <input
           v-model="newProjectName"
           class="field"
           type="text"
-          placeholder="Nome do projeto"
+          placeholder="Project name"
         />
         <textarea
           v-model="newProjectIdea"
           class="field field-area"
-          placeholder="Descreva a ideia do produto"
+          placeholder="Describe the product idea"
         />
         <button
           class="secondary-action"
           :disabled="creatingProject"
           @click="handleCreateProject"
         >
-          {{ creatingProject ? "Criando..." : "Criar Projeto" }}
+          {{ creatingProject ? "Creating..." : "Create Project" }}
         </button>
       </section>
 
       <section class="panel">
-        <h2>Projetos</h2>
-        <div v-if="loadingProjects" class="state">Carregando projetos...</div>
+        <h2>Projects</h2>
+        <div v-if="loadingProjects" class="state">Loading projects...</div>
         <ul v-else class="list">
           <li v-for="project in projects" :key="project.id">
             <button
@@ -355,9 +355,9 @@ onMounted(async () => {
       </section>
 
       <section class="panel">
-        <h2>PRDs do Projeto</h2>
+        <h2>Project PRDs</h2>
         <p v-if="selectedProject" class="meta">{{ selectedProject.name }}</p>
-        <div v-if="loadingPRDs" class="state">Buscando PRDs...</div>
+        <div v-if="loadingPRDs" class="state">Loading PRDs...</div>
         <ul v-else class="list">
           <li v-for="prd in projectPRDs" :key="prd.id">
             <button
@@ -366,11 +366,11 @@ onMounted(async () => {
               @click="selectedPRDId = prd.id"
             >
               <strong>{{ prd.id }}</strong>
-              <span>{{ prd.preview ?? "Sem preview" }}</span>
+              <span>{{ prd.preview ?? "No preview" }}</span>
             </button>
           </li>
           <li v-if="projectPRDs.length === 0" class="state">
-            Nenhum PRD encontrado para este projeto.
+            No PRDs found for this project.
           </li>
         </ul>
       </section>
@@ -378,45 +378,45 @@ onMounted(async () => {
       <section class="panel discovery-panel">
         <h2>Discovery</h2>
         <p class="meta">
-          Adicione ao menos uma resposta antes de gerar um novo PRD.
+          Add at least one answer before generating a new PRD.
         </p>
         <textarea
           v-model="discoveryQuestion"
           class="field discovery-question"
-          placeholder="Pergunta"
+          placeholder="Question"
         />
         <textarea
           v-model="discoveryAnswer"
           class="field field-area"
-          placeholder="Resposta da discovery"
+          placeholder="Discovery answer"
         />
         <button
           class="secondary-action"
           :disabled="savingDiscovery || !selectedProjectId"
           @click="handleSaveDiscoveryAnswer"
         >
-          {{ savingDiscovery ? "Salvando discovery..." : "Salvar Resposta" }}
+          {{ savingDiscovery ? "Saving discovery..." : "Save Answer" }}
         </button>
       </section>
 
       <section class="panel editor-panel">
         <div class="editor-header">
-          <h2>Editor de PRD</h2>
+          <h2>PRD Editor</h2>
           <div class="editor-actions">
             <button
               class="secondary-action"
               :disabled="savingPRD || !selectedPRDId"
               @click="handleSavePRD"
             >
-              {{ savingPRD ? "Salvando..." : "Salvar" }}
+              {{ savingPRD ? "Saving..." : "Save" }}
             </button>
             <button class="secondary-action" @click="handleExportPDF">
-              Exportar PDF
+              Export PDF
             </button>
           </div>
         </div>
 
-        <div v-if="loadingPRDDetail" class="state">Abrindo PRD...</div>
+        <div v-if="loadingPRDDetail" class="state">Opening PRD...</div>
 
         <div v-else class="editor-grid">
           <div>
@@ -424,7 +424,7 @@ onMounted(async () => {
             <textarea
               v-model="editorContent"
               class="editor-area"
-              placeholder="Edite seu PRD em Markdown"
+              placeholder="Edit your PRD in Markdown"
             />
           </div>
           <div>
